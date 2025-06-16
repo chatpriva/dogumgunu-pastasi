@@ -1,23 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mumun Sönmesi</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="texts">
-        <h1 align="center">Doğum Günün Kutlu Olsun X!</h1>
-        <p align="center">Pastayı Üfle</p>
-      </div>
-      <div class="cake">
-        <div class="layer bottom-layer"></div>
-        <div class="layer top-layer"></div>
-        <div class="candle" id="candle"></div>
-      </div>
-    </div>
-    <script src="script.js"></script>
-  </body>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Meta de Lucro Surebet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #333;
+    }
+    th {
+      background-color: #222;
+    }
+    .batida {
+      background-color: #2ecc71; /* verde */
+      color: #000;
+    }
+    .nao-batida {
+      background-color: #e74c3c; /* vermelho */
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    h1 {
+      color: #f1c40f;
+    }
+  </style>
+</head>
+<body>
+  <h1>Meta de Lucro - Surebet (5% ao dia)</h1>
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>Dia</th>
+        <th>Meta</th>
+        <th>Status</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <br>
+  <button onclick="resetar()">🔁 Resetar progresso</button>
+
+  <script>
+    const bancaInicial = 700;
+    const dias = 30;
+    const taxa = 0.05; // 5% ao dia
+
+    function calcularMeta(dia) {
+      return (bancaInicial * Math.pow(1 + taxa, dia)).toFixed(2);
+    }
+
+    function carregarTabela() {
+      const tbody = document.querySelector("tbody");
+      tbody.innerHTML = "";
+
+      for (let dia = 1; dia <= dias; dia++) {
+        const valor = calcularMeta(dia);
+        const status = localStorage.getItem(`dia${dia}`) === "batida" ? "batida" : "nao-batida";
+        const linha = document.createElement("tr");
+        linha.className = status;
+
+        linha.innerHTML = `
+          <td>Dia ${dia}</td>
+          <td>R$ ${valor}</td>
+          <td>${status === "batida" ? "✅ Batida" : "❌ Não batida"}</td>
+          <td><button onclick="marcar(${dia})">Marcar como batida</button></td>
+        `;
+        tbody.appendChild(linha);
+      }
+    }
+
+    function marcar(dia) {
+      localStorage.setItem(`dia${dia}`, "batida");
+      carregarTabela();
+    }
+
+    function resetar() {
+      for (let dia = 1; dia <= dias; dia++) {
+        localStorage.removeItem(`dia${dia}`);
+      }
+      carregarTabela();
+    }
+
+    carregarTabela();
+  </script>
+</body>
 </html>
